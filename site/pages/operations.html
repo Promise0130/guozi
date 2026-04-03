@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>企业经营数据分析 — 地方国资信息采集与分析</title>
+  <link rel="stylesheet" href="../css/main.css?v=20260403-2">
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <div class="site-title">地方国资信息采集与分析</div>
+      <nav>
+        <a href="../index.html">首页</a>
+        <a href="entities.html">国资企业主体</a>
+        <a href="operations.html" class="active">企业经营数据</a>
+        <a href="policies.html">收益管理规则</a>
+        <a href="budget.html">财政统筹结果</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1 class="page-title">企业经营数据分析</h1>
+    <p class="page-subtitle">
+      数据来源: 模块B monthly_operation.csv (28字段) |
+      字段映射: indicator_name→指标, value→数值, yoy_pct→同比, scope→口径, source_url→来源
+    </p>
+
+    <!-- KPI - 2026年1-2月全国 -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-rev">—</div>
+        <div class="kpi-label">营业总收入</div>
+        <div id="kpi-rev-yoy"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-profit">—</div>
+        <div class="kpi-label">利润总额</div>
+        <div id="kpi-profit-yoy"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-tax">—</div>
+        <div class="kpi-label">应交税费</div>
+        <div id="kpi-tax-yoy"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-dar">—</div>
+        <div class="kpi-label">资产负债率</div>
+        <div id="kpi-dar-yoy"></div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-box">
+      <canvas id="chart-rev-profit"></canvas>
+    </div>
+    <p style="font-size:.78rem;color:var(--text-muted);text-align:center;margin-top:-12px;margin-bottom:16px;">
+      图表字段: 各省最新一期利润总额，按 value(亿元) 从高到低排序；排除全国/中央口径
+    </p>
+
+    <!-- Filter -->
+    <div class="filter-bar">
+      <select id="filter-scope">
+        <option value="">全部口径</option>
+        <option value="A1">A1 全国国企</option>
+        <option value="A2">A2 全省/全区国企</option>
+        <option value="B1">B1 省属/市管监管</option>
+        <option value="B2">B2 地方国企(含区属)</option>
+      </select>
+      <select id="filter-province">
+        <option value="">全部省份</option>
+      </select>
+      <select id="filter-indicator">
+        <option value="">全部指标</option>
+        <option value="营业总收入">营业总收入</option>
+        <option value="利润总额">利润总额</option>
+        <option value="应交税费">应交税费</option>
+        <option value="资产总额">资产总额</option>
+        <option value="所有者权益">所有者权益</option>
+        <option value="资产负债率">资产负债率</option>
+      </select>
+    </div>
+
+    <!-- Data Table -->
+    <div class="card" id="monthly-content">加载中...</div>
+
+    <div class="card">
+      <h3>口径警示</h3>
+      <p style="font-size:.85rem;color:var(--text-muted)">
+        ⚠️ A1(全国)含数千户国企 ≠ B1(省属监管)仅10~40户集团。不同scope数据不可直接比较。
+        每条记录的scope/scope_code字段标明口径。证据通过source_url+uev_level回链。
+      </p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    地方国资信息采集与分析 · 模块B经营数据 · monthly_operation.csv(28字段) · 主键record_id
+  </footer>
+
+  <script src="../data/embedded-data.js?v=20260403-2"></script>
+  <script src="../js/app.js?v=20260403-2"></script>
+  <script>
+    DataStore.loadAll().then(ds => {
+      renderMonthlyPage(ds.monthly, ds.monthly);
+
+      // Populate province dropdown dynamically
+      const provSelect = document.getElementById('filter-province');
+      const provSet = new Map();
+      ds.monthly.forEach(r => {
+        if (r.province_code && !provSet.has(r.province_code)) {
+          provSet.set(r.province_code, r.province);
+        }
+      });
+      provSet.forEach((name, code) => {
+        const opt = document.createElement('option');
+        opt.value = code;
+        opt.textContent = name;
+        provSelect.appendChild(opt);
+      });
+
+      const applyFilter = () => {
+        const scope = document.getElementById('filter-scope').value;
+        const prov = provSelect.value;
+        const ind = document.getElementById('filter-indicator').value;
+        let filtered = ds.monthly;
+        if (scope) filtered = filtered.filter(r => r.scope_code === scope);
+        if (prov) filtered = filtered.filter(r => r.province_code === prov);
+        if (ind) filtered = filtered.filter(r => r.indicator_name === ind);
+        renderMonthlyPage(filtered, ds.monthly);
+      };
+      document.getElementById('filter-scope').addEventListener('change', applyFilter);
+      provSelect.addEventListener('change', applyFilter);
+      document.getElementById('filter-indicator').addEventListener('change', applyFilter);
+    });
+  </script>
+</body>
+</html>

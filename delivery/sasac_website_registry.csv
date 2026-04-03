@@ -1,0 +1,47 @@
+# 全国地方国资委官网链接注册表
+# National Registry of Provincial SASAC Official Websites
+#
+# 用途：所有国企名单、收益管理规则、政策采集均以本表作为权威数据源。
+# 更新日期：2026-04-04
+# 维护说明：新增/变更链接时，同步更新 status 和 enterprise_list_url 字段。
+#
+# ┌─ status 字段说明 ─────────────────────────────────────────────┐
+# │ OK          = 可正常抓取，已获取企业名录                        │
+# │ PARTIAL     = 可访问首页但企业名录页不完整或需翻页               │
+# │ BLOCKED     = fetch_webpage 无法获取内容(反爬/WAF/超时)         │
+# │ UNTESTED    = 尚未测试                                         │
+# └────────────────────────────────────────────────────────────────┘
+
+province,province_code,sasac_url,enterprise_list_url,status,enterprise_count,last_tested,notes
+北京,BJ,http://gzw.beijing.gov.cn,http://gzw.beijing.gov.cn/yggq/jgqy/,OK,42,2026-04-03,三页分页 index.html / index_1.html / index_2.html
+天津,TJ,http://sasac.tj.gov.cn,https://sasac.tj.gov.cn/GZJG8342/GZFM8996/SGGQML5116/,OK,29,2026-04-04,正确域名sasac.tj.gov.cn 含市管国企名录+委管企业名录
+河北,HE,http://hbsa.hebei.gov.cn,http://hbsa.hebei.gov.cn/GZJG419/art_page1.html,PARTIAL,4,2026-04-04,正确域名hbsa.hebei.gov.cn 企业名录页JS渲染 仅从新闻识别4家
+山西,SX,http://gzw.shanxi.gov.cn,http://gzw.shanxi.gov.cn/jgqyml/,PARTIAL,5,2026-04-03,页面可能截断 只显示5家
+内蒙古,NM,http://gzw.nmg.gov.cn,http://gzw.nmg.gov.cn/zfxxgk/qyxxgk/,OK,19,2026-04-03,企业信息公开栏目
+辽宁,LN,http://gzw.ln.gov.cn,http://gzw.ln.gov.cn/gzw/bsfw/sqml/,OK,11,2026-04-03,省企名录编号列表
+吉林,JL,http://gzw.jl.gov.cn,,PARTIAL,9,2026-04-03,无独立企业名录页 从新闻/招聘识别
+黑龙江,HL,http://gzw.hlj.gov.cn,,PARTIAL,3,2026-04-03,无独立企业名录页 从新闻识别
+上海,SH,http://www.gzw.sh.gov.cn,http://www.gzw.sh.gov.cn/shgzw_xwzx_xxpl/,OK,42,2026-04-04,正确域名www.gzw.sh.gov.cn 信息披露页有完整企业目录
+江苏,JS,http://jsgzw.jiangsu.gov.cn,http://jsgzw.jiangsu.gov.cn/col/col11779/index.html,OK,21,2026-04-04,正确域名jsgzw.jiangsu.gov.cn 首页直接列出21家省属企业
+浙江,ZJ,https://gzw.zj.gov.cn,,PARTIAL,3,2026-04-03,无独立企业名录页 从新闻识别
+安徽,AH,http://gzw.ah.gov.cn,http://gzw.ah.gov.cn/,OK,29,2026-04-03,省企网群侧边栏企业链接
+福建,FJ,http://gzw.fujian.gov.cn,http://gzw.fujian.gov.cn/gzgk/ssqy_1/,OK,16,2026-04-04,正确域名gzw.fujian.gov.cn 官方所出资企业列表
+江西,JX,http://gzw.jiangxi.gov.cn,http://gzw.jiangxi.gov.cn/jxsgzw/sczjgqykjcgtgyyqd/pc/list.html,OK,11,2026-04-04,正确域名gzw.jiangxi.gov.cn 省属企业名录
+山东,SD,http://gzw.shandong.gov.cn,,PARTIAL,7,2026-04-03,无独立企业名录页 从新闻/招聘识别
+河南,HA,http://gzw.henan.gov.cn,,PARTIAL,5,2026-04-03,从新闻识别
+湖北,HB,http://gzw.hubei.gov.cn,,BLOCKED,0,2026-04-04,WAF 412 浏览器可获challenge cookie但同会话根路径/index/gzw/xxgk仍返回400
+湖南,HN,http://gzw.hunan.gov.cn,http://gzw.hunan.gov.cn/gzw/xxgk_71571/ssqyml/201803/t20180327_4980103.html,OK,21,2026-04-03,官方结构化表格
+广东,GD,https://gzw.gd.gov.cn,,OK,18,2026-04-03,从重点领域栏目提取
+广西,GX,http://gzw.gxzf.gov.cn,http://gzw.gxzf.gov.cn/gxgq/,OK,16,2026-04-04,正确域名gzw.gxzf.gov.cn 官方广西国企列表
+海南,HI,https://gzw.hainan.gov.cn,https://gzw.hainan.gov.cn/zxfw_27525/qymd/zdjgqyml/,OK,9,2026-04-03,省属重点监管企业名录页
+重庆,CQ,http://gzw.cq.gov.cn,http://gzw.cq.gov.cn/gqjj/,PARTIAL,15,2026-04-03,国企简介专栏第1页 可能还有更多
+四川,SC,http://gzw.sc.gov.cn,,PARTIAL,1,2026-04-03,无独立名录页 从新闻识别
+贵州,GZ,http://gzw.guizhou.gov.cn,,PARTIAL,8,2026-04-03,从企业之窗和新闻识别
+云南,YN,https://gzw.yn.gov.cn,,PARTIAL,7,2026-04-03,从省属企业新闻识别
+西藏,XZ,http://gzw.xizang.gov.cn,,BLOCKED,0,2026-04-04,官方主机返回502且中央国资委地方国资页该行无可点击href gzw.xz.gov.cn为徐州非西藏
+陕西,SN,http://sxgz.shaanxi.gov.cn,http://sxgz.shaanxi.gov.cn/sy/gqzc/qydt/,OK,18,2026-04-04,正确域名sxgz.shaanxi.gov.cn 从国企之窗识别18家省属企业
+甘肃,GS,http://gzw.gansu.gov.cn,,BLOCKED,0,2026-04-04,WAF 412 浏览器可获challenge cookie但同会话根路径/index/gzw/xxgk仍返回400
+青海,QH,http://gzw.qinghai.gov.cn,,BLOCKED,0,2026-04-04,WAF 412 浏览器可获challenge cookie但同会话根路径/index/gzw/xxgk仍返回400
+宁夏,NX,http://gzw.nx.gov.cn,http://gzw.nx.gov.cn/gyqy/qyml/,OK,6,2026-04-03,企业名录/区属企业专栏
+新疆,XJ,http://gzw.xinjiang.gov.cn,http://gzw.xinjiang.gov.cn/gzw/jgqy/list_tj.shtml,OK,17,2026-04-03,监管企业专栏
+新疆兵团,BT,http://gyzc.xjbt.gov.cn,http://gyzc.xjbt.gov.cn/col/col9/,PARTIAL,6,2026-04-04,正确域名gyzc.xjbt.gov.cn 从新闻识别6家企业

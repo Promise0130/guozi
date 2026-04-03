@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>收益管理规则动态 — 地方国资信息采集与分析</title>
+  <link rel="stylesheet" href="../css/main.css?v=20260403-2">
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <div class="site-title">地方国资信息采集与分析</div>
+      <nav>
+        <a href="../index.html">首页</a>
+        <a href="entities.html">国资企业主体</a>
+        <a href="operations.html">企业经营数据</a>
+        <a href="policies.html" class="active">收益管理规则</a>
+        <a href="budget.html">财政统筹结果</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1 class="page-title">收益管理规则动态</h1>
+    <p class="page-subtitle">
+      数据来源: 模块C policy_briefing.csv (15字段) + 模块D budget_rules.csv RULE类 (21字段) |
+      字段映射: title→政策名称, doc_type→文种, evidence_strength→证据等级, ratio_value→比例
+    </p>
+
+    <!-- KPI -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-pol-total">—</div>
+        <div class="kpi-label">政策文件数</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-pol-a">—</div>
+        <div class="kpi-label">A级(正式令文)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-rules">—</div>
+        <div class="kpi-label">比例规则数</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-confirmed">—</div>
+        <div class="kpi-label">已确认比例</div>
+      </div>
+    </div>
+
+    <!-- Policy + Rules content -->
+    <div class="card" id="policy-content">加载中...</div>
+
+    <div class="card">
+      <h3>跨模块映射说明</h3>
+      <p style="font-size:.85rem;color:var(--text-muted)">
+        本页合并展示两个底表数据：<br>
+        · <strong>政策文件</strong>来自module C policy_briefing.csv — 字段: id, title, issuer, doc_type, doc_type_code, topic_primary, evidence_url, evidence_strength<br>
+        · <strong>比例规则</strong>来自module D budget_rules.csv(record_type=RULE) — 字段: record_id, rule_description_zh, ratio_value, ratio_type, scope_label, source_url, evidence_strength<br>
+        证据回链均通过对应的evidence_url/source_url字段实现。UNIDENTIFIED表示在公开材料中未识别到。
+      </p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    地方国资信息采集与分析 · 模块C+D收益规则 · policy_briefing.csv(15字段) + budget_rules.csv(21字段)
+  </footer>
+
+  <script src="../data/embedded-data.js?v=20260403-2"></script>
+  <script src="../js/app.js?v=20260403-2"></script>
+  <script>
+    DataStore.loadAll().then(ds => {
+      const rules = ds.budgetRules.filter(r => r.record_type === 'RULE');
+      document.getElementById('kpi-pol-total').textContent = ds.policies.length;
+      document.getElementById('kpi-pol-a').textContent = ds.policies.filter(p => p.doc_type_code === 'A').length;
+      document.getElementById('kpi-rules').textContent = rules.length;
+      document.getElementById('kpi-confirmed').textContent = rules.filter(r => r.ratio_value && r.ratio_value !== 'UNIDENTIFIED').length;
+      renderPolicyPage(ds.policies, ds.budgetRules);
+    });
+  </script>
+</body>
+</html>

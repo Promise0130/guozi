@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>财政统筹结果 — 地方国资信息采集与分析</title>
+  <link rel="stylesheet" href="../css/main.css?v=20260403-2">
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <div class="site-title">地方国资信息采集与分析</div>
+      <nav>
+        <a href="../index.html">首页</a>
+        <a href="entities.html">国资企业主体</a>
+        <a href="operations.html">企业经营数据</a>
+        <a href="policies.html">收益管理规则</a>
+        <a href="budget.html" class="active">财政统筹结果</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1 class="page-title">财政统筹结果</h1>
+    <p class="page-subtitle">
+      数据来源: 模块D budget_rules.csv BUDGET_FIGURE/TRANSFER类 (21字段) + budget_transfer.csv (3字段) |
+      字段映射: scope_label→范围, budget_income→收入, budget_expenditure→支出, budget_transfer_to_gpb→调入公共预算
+    </p>
+
+    <!-- KPI -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-central-inc">—</div>
+        <div class="kpi-label">中央国资收入</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-local-inc">—</div>
+        <div class="kpi-label">地方国资收入(合计)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-national-inc">—</div>
+        <div class="kpi-label">全国国资收入</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-gpb-transfer">—</div>
+        <div class="kpi-label">中央调入一般公共预算</div>
+      </div>
+    </div>
+
+    <!-- Budget content -->
+    <div class="card" id="budget-content">加载中...</div>
+
+    <!-- Transfer chart -->
+    <div class="card">
+      <h3>转移支付TOP10省份</h3>
+      <div class="chart-box">
+        <canvas id="chart-transfer"></canvas>
+      </div>
+      <p style="font-size:.78rem;color:var(--text-muted);text-align:center">
+        图表字段: province, 2026_budget_100M_CNY (来源: budget_transfer.csv)
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>数据结构说明</h3>
+      <p style="font-size:.85rem;color:var(--text-muted)">
+        本页整合三类record_type数据：<br>
+        · <strong>BUDGET_FIGURE</strong>: 预算收支数字 — scope=national/central/local/province<br>
+        · <strong>TRANSFER</strong>: 中央→地方转移支付 — scope_label=central_to_local<br>
+        · <strong>budget_transfer.csv</strong>: 31省转移支付明细 — 主键province<br>
+        ⚠️ 注意: 转移支付(合计33.78亿)≠地方本级预算总量(4249.82亿)。SCOPE-03规则明确区分。<br>
+        省级预算收支数字均为UNIDENTIFIED（省级预算报告为PDF格式，不可解析）。
+      </p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    地方国资信息采集与分析 · 模块D财政统筹 · budget_rules.csv(21字段) + budget_transfer.csv(3字段)
+  </footer>
+
+  <script src="../data/embedded-data.js?v=20260403-2"></script>
+  <script src="../js/app.js?v=20260403-2"></script>
+  <script>
+    DataStore.loadAll().then(ds => {
+      renderBudgetPage(ds.budgetRules, ds.budgetTransfer);
+    });
+  </script>
+</body>
+</html>

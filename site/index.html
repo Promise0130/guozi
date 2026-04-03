@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>地方国资信息采集与分析</title>
+  <link rel="stylesheet" href="css/main.css?v=20260403-2">
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <div class="site-title">地方国资信息采集与分析</div>
+      <nav>
+        <a href="index.html" class="active">首页</a>
+        <a href="pages/entities.html">国资企业主体</a>
+        <a href="pages/operations.html">企业经营数据</a>
+        <a href="pages/policies.html">收益管理规则</a>
+        <a href="pages/budget.html">财政统筹结果</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1 class="page-title">平台总览</h1>
+    <p class="page-subtitle">基于模块A~D采集数据的综合展示 | 数据截至 2026-04-03</p>
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-value" id="idx-entities">—</div>
+        <div class="kpi-label">已采集企业主体</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="idx-monthly">—</div>
+        <div class="kpi-label">经营数据条目</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="idx-policies">—</div>
+        <div class="kpi-label">政策文件</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="idx-budget">—</div>
+        <div class="kpi-label">预算规则条目</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>数据来源与证据体系</h3>
+      <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:12px">
+        所有数据均标注证据等级(S1~S4)并可回溯至来源URL。点击各页面"详情"链接查看具体证据。
+      </p>
+      <table class="data-table">
+        <thead><tr><th>模块</th><th>数据文件</th><th>记录数</th><th>字段数</th><th>主键</th><th>来源机构</th></tr></thead>
+        <tbody>
+          <tr><td>A 企业主体</td><td>entity_list.csv</td><td id="idx-a-cnt">—</td><td>21</td><td>entity_id</td><td>各省国资委</td></tr>
+          <tr><td>B 经营数据</td><td>monthly_operation.csv</td><td id="idx-b-cnt">—</td><td>28</td><td>record_id</td><td>财政部/省国资委</td></tr>
+          <tr><td>C 政策简报</td><td>policy_briefing.csv</td><td id="idx-c-cnt">—</td><td>15</td><td>id</td><td>国资委/财政部</td></tr>
+          <tr><td>D 预算规则</td><td>budget_rules.csv</td><td id="idx-d-cnt">—</td><td>21</td><td>record_id</td><td>财政部预算司</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>栏目导航</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;">
+        <a href="pages/entities.html" style="text-decoration:none;color:inherit;">
+          <div class="kpi-card" style="text-align:left;cursor:pointer;">
+            <strong>国资企业主体</strong>
+            <div style="font-size:.82rem;color:var(--text-muted);margin-top:4px;">
+              省级/地市国有企业名单，含口径判定、置信度评分和证据回链
+            </div>
+            <div style="font-size:.78rem;margin-top:6px;color:var(--primary-light);">
+              底表: entity_list.csv → 21字段/条
+            </div>
+          </div>
+        </a>
+        <a href="pages/operations.html" style="text-decoration:none;color:inherit;">
+          <div class="kpi-card" style="text-align:left;cursor:pointer;">
+            <strong>企业经营数据分析</strong>
+            <div style="font-size:.82rem;color:var(--text-muted);margin-top:4px;">
+              营收、利润、税费、资产负债率等核心指标的月度/年度趋势
+            </div>
+            <div style="font-size:.78rem;margin-top:6px;color:var(--primary-light);">
+              底表: monthly_operation.csv → 28字段/条
+            </div>
+          </div>
+        </a>
+        <a href="pages/policies.html" style="text-decoration:none;color:inherit;">
+          <div class="kpi-card" style="text-align:left;cursor:pointer;">
+            <strong>收益管理规则动态</strong>
+            <div style="font-size:.82rem;color:var(--text-muted);margin-top:4px;">
+              政策文件分级、约束性表述识别、净利润上缴比例规则
+            </div>
+            <div style="font-size:.78rem;margin-top:6px;color:var(--primary-light);">
+              底表: policy_briefing.csv + budget_rules.csv(RULE类)
+            </div>
+          </div>
+        </a>
+        <a href="pages/budget.html" style="text-decoration:none;color:inherit;">
+          <div class="kpi-card" style="text-align:left;cursor:pointer;">
+            <strong>财政统筹结果</strong>
+            <div style="font-size:.82rem;color:var(--text-muted);margin-top:4px;">
+              国有资本经营预算收支、调入一般公共预算、中央对地方转移支付
+            </div>
+            <div style="font-size:.78rem;margin-top:6px;color:var(--primary-light);">
+              底表: budget_rules.csv(BUDGET_FIGURE/TRANSFER) + budget_transfer.csv
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    地方国资信息采集与分析 · 展示层 v1.0 · 数据截至 2026-04-03 · 所有数据可回溯至来源证据
+  </footer>
+
+  <script src="data/embedded-data.js?v=20260403-2"></script>
+  <script src="js/app.js?v=20260403-2"></script>
+  <script>
+    DataStore.loadAll().then(ds => {
+      document.getElementById('idx-entities').textContent = ds.entities.length;
+      document.getElementById('idx-monthly').textContent = ds.monthly.length;
+      document.getElementById('idx-policies').textContent = ds.policies.length;
+      document.getElementById('idx-budget').textContent = ds.budgetRules.length;
+      document.getElementById('idx-a-cnt').textContent = ds.entities.length;
+      document.getElementById('idx-b-cnt').textContent = ds.monthly.length;
+      document.getElementById('idx-c-cnt').textContent = ds.policies.length;
+      document.getElementById('idx-d-cnt').textContent = ds.budgetRules.length;
+    }).catch(err => {
+      console.error('数据加载失败:', err);
+      document.querySelectorAll('.kpi-value').forEach(el => {
+        if (el.textContent === '—') el.textContent = '加载失败';
+      });
+    });
+  </script>
+</body>
+</html>

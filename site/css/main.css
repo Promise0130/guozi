@@ -1,0 +1,83 @@
+/* ===== 地方国资信息采集与分析 — 展示层样式 ===== */
+:root {
+  --primary: #1a5276;
+  --primary-light: #2980b9;
+  --accent: #e74c3c;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2c3e50;
+  --text-muted: #7f8c8d;
+  --border: #dee2e6;
+  --evidence-s1: #27ae60;
+  --evidence-s2: #f39c12;
+  --evidence-s3: #e67e22;
+  --evidence-s4: #e74c3c;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+/* --- NAV --- */
+.site-header { background: var(--primary); color: #fff; padding: 0; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+.site-header .inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; }
+.site-title { font-size: 1.15rem; font-weight: 700; padding: 14px 20px; white-space: nowrap; }
+nav { display: flex; flex: 1; }
+nav a { color: rgba(255,255,255,.85); text-decoration: none; padding: 14px 18px; font-size: .9rem; transition: background .2s; }
+nav a:hover, nav a.active { background: var(--primary-light); color: #fff; }
+
+/* --- LAYOUT --- */
+.container { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
+.page-title { font-size: 1.5rem; margin-bottom: 6px; }
+.page-subtitle { color: var(--text-muted); font-size: .88rem; margin-bottom: 20px; }
+
+/* --- CARD --- */
+.card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+.card h3 { font-size: 1.05rem; margin-bottom: 12px; border-left: 4px solid var(--primary-light); padding-left: 10px; }
+
+/* --- TABLE --- */
+.data-table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+.data-table th { background: var(--primary); color: #fff; padding: 10px 12px; text-align: left; font-weight: 500; }
+.data-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+.data-table tbody tr:hover { background: #eaf2f8; }
+.data-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.data-table .evidence-link { color: var(--primary-light); text-decoration: underline; cursor: pointer; font-size: .82rem; }
+
+/* --- EVIDENCE BADGE --- */
+.ev-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: .75rem; font-weight: 600; color: #fff; }
+.ev-badge.s1 { background: var(--evidence-s1); }
+.ev-badge.s2 { background: var(--evidence-s2); }
+.ev-badge.s3 { background: var(--evidence-s3); }
+.ev-badge.s4 { background: var(--evidence-s4); }
+
+/* --- KPI ROW --- */
+.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; }
+.kpi-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px; text-align: center; }
+.kpi-value { font-size: 1.6rem; font-weight: 700; color: var(--primary); }
+.kpi-label { font-size: .82rem; color: var(--text-muted); margin-top: 4px; }
+.kpi-yoy { font-size: .78rem; margin-top: 2px; }
+.kpi-yoy.up { color: var(--evidence-s1); }
+.kpi-yoy.down { color: var(--accent); }
+
+/* --- CHART PLACEHOLDER --- */
+.chart-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; min-height: 280px; display: flex; align-items: center; justify-content: center; }
+.chart-box canvas { max-width: 100%; }
+
+/* --- EVIDENCE PANEL --- */
+.evidence-panel { background: #fef9e7; border: 1px solid #f9e79f; border-radius: 8px; padding: 14px; margin-top: 10px; font-size: .83rem; }
+.evidence-panel dt { font-weight: 600; margin-top: 6px; }
+.evidence-panel dd { margin-left: 14px; color: var(--text-muted); }
+.evidence-panel a { color: var(--primary-light); }
+
+/* --- FILTER BAR --- */
+.filter-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-bar select, .filter-bar input { padding: 6px 10px; border: 1px solid var(--border); border-radius: 4px; font-size: .85rem; }
+
+/* --- FOOTER --- */
+.site-footer { text-align: center; padding: 20px; color: var(--text-muted); font-size: .8rem; border-top: 1px solid var(--border); margin-top: 40px; }
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .site-header .inner { flex-direction: column; }
+  nav { flex-wrap: wrap; justify-content: center; }
+  nav a { padding: 10px 12px; font-size: .82rem; }
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+}

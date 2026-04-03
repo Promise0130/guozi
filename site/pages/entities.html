@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>国资企业主体 — 地方国资信息采集与分析</title>
+  <link rel="stylesheet" href="../css/main.css?v=20260403-2">
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <div class="site-title">地方国资信息采集与分析</div>
+      <nav>
+        <a href="../index.html">首页</a>
+        <a href="entities.html" class="active">国资企业主体</a>
+        <a href="operations.html">企业经营数据</a>
+        <a href="policies.html">收益管理规则</a>
+        <a href="budget.html">财政统筹结果</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1 class="page-title">国资企业主体</h1>
+    <p class="page-subtitle">
+      数据来源: 模块A entity_list.csv (21字段) |
+      字段映射: entity_name_full→企业名称, province→省份, list_caliber→口径, confidence→置信度, uev_level→证据等级
+    </p>
+
+    <div class="card">
+      <h3>当前官网采集边界</h3>
+      <p style="font-size:.9rem;color:var(--text-muted)">
+        网站当前展示的是已从官方省级国资委官网确认并落入 entity_list.csv 的企业名单。湖北、甘肃、青海、西藏 4 省区仍保留为
+        <strong>BLOCKED</strong>：其中湖北、甘肃、青海已确认官方 URL 但当前环境被 WAF 拦截，西藏官方主机当前返回 502，暂未并入本页企业表。
+      </p>
+    </div>
+
+    <!-- KPI -->
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-total">—</div>
+        <div class="kpi-label">企业总数</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-provinces">—</div>
+        <div class="kpi-label">覆盖省份</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-supervised">—</div>
+        <div class="kpi-label">supervised口径</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-avg-conf">—</div>
+        <div class="kpi-label">平均置信度</div>
+      </div>
+    </div>
+
+    <!-- Filter -->
+    <div class="filter-bar">
+      <select id="filter-province"><option value="">全部省份</option></select>
+      <select id="filter-caliber">
+        <option value="">全部口径</option>
+        <option value="supervised">supervised</option>
+        <option value="identifiable">identifiable</option>
+      </select>
+    </div>
+
+    <!-- Data Table -->
+    <div class="card" id="entity-content">加载中...</div>
+
+    <!-- Evidence explanation -->
+    <div class="card">
+      <h3>证据回链说明</h3>
+      <p style="font-size:.85rem;color:var(--text-muted)">
+        每条记录通过 <code>source_url</code> 字段链接至来源页面，<code>uev_level</code> 标注证据强度(1=最高)。
+        字段对应: source_institution→来源机构, source_page_type→页面抓取模式, extraction_date→采集日期。
+        点击"详情"展开完整证据面板。
+      </p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    地方国资信息采集与分析 · 模块A企业主体 · entity_list.csv(21字段) · 主键entity_id
+  </footer>
+
+  <script src="../data/embedded-data.js?v=20260403-2"></script>
+  <script src="../js/app.js?v=20260403-2"></script>
+  <script>
+    DataStore.loadAll().then(ds => {
+      renderEntityPage(ds.entities);
+      // Populate province filter
+      const provinces = [...new Set(ds.entities.map(e => e.province))].sort();
+      const sel = document.getElementById('filter-province');
+      provinces.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = p; sel.appendChild(o); });
+      // Filter handlers
+      const applyFilter = () => {
+        const prov = document.getElementById('filter-province').value;
+        const cal = document.getElementById('filter-caliber').value;
+        let filtered = ds.entities;
+        if (prov) filtered = filtered.filter(e => e.province === prov);
+        if (cal) filtered = filtered.filter(e => e.list_caliber === cal);
+        renderEntityPage(filtered);
+      };
+      document.getElementById('filter-province').addEventListener('change', applyFilter);
+      document.getElementById('filter-caliber').addEventListener('change', applyFilter);
+    });
+  </script>
+</body>
+</html>

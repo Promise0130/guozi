@@ -1,0 +1,19 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run site locally",
+			"type": "shell",
+			"command": "python",
+			"args": [
+				"-m",
+				"http.server",
+				"8000",
+				"--directory",
+				"site"
+			],
+			"isBackground": true,
+			"group": "build"
+		}
+	]
+}
